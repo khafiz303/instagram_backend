@@ -8,7 +8,7 @@ const postCreate = async (req, res) => {
 
         // Проверяем наличие файла изображения
         if (req.file && req.file.filename) {
-            const imageUrl = '/img/' + req.file.filename;
+            const imageUrl = '/upload/' + req.file.filename;
             const description = req.body.description;
             const userId = req.user.id;
 
