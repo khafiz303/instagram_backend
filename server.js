@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use(express.urlencoded());
 // app.use(upload.any());
-app.use(express.static(__dirname + '/public'))
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors())
 require('./app/auth/passport');
 app.use(passport.initialize());
