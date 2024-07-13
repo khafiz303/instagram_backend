@@ -19,6 +19,7 @@ app.use(require('./app/auth/routes'))
 app.use(require('./app/story/routes'))
 app.use(require('./app/follow/routes'))
 app.use(require('./app/follow/suggestions/routes'))
+app.use(require('./app/comment/routes'))
 
 
 const PORT = 1000;

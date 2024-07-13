@@ -1,6 +1,7 @@
 const Post = require('./Post');
 const Comment = require('./Comment');
-const User = require('../auth/User')
+const User = require('../auth/User');
+const { where } = require('sequelize');
 const postCreate = async (req, res) => {
     try {
         console.log(req.body);
@@ -19,28 +20,7 @@ const postCreate = async (req, res) => {
                 userId
             });
 
-            // Получаем комментарии из запроса
-            let comments = req.body.comments;
-            console.log(comments);
-            // Проверяем, что comments является массивом
-            if (comments && Array.isArray(comments)) {
-                // Создаем каждый комментарий для поста
-                await Promise.all(comments.map(async (comment) => {
-                    try {
-                        await Comment.create({
-                            text: comment.text,
-                            userId: req.user.id,
-                            postId: post.id // Используем id созданного поста
-                        });
-                    } catch (error) {
-                        console.error('Error creating comment:', error);
-                        // Обработка ошибки при создании комментария
-                    }
-                }));
-            } else {
-                console.error('req.body.comments is not an array or is undefined');
-                // Обработка ситуации, когда req.body.comments не является массивом
-            }
+           
 
             res.status(200).send('Данные успешно обработаны');
         } else {
@@ -76,7 +56,20 @@ const getAllPosts = async (req , res)=>{
 
 
 const findPost = async(req , res)=>{
-    const postFind = await Post.findByPk(req.params.id)
+    const postFind = await Post.findOne({
+        where:{
+            id : req.params.id
+        },
+        include:[
+            {
+                model : Comment,
+                as : 'comments'
+                
+            }
+        ]
+
+    })
+
     res.status(200).send(postFind)
 }
 
@@ -96,7 +89,7 @@ const postEdit = async (req , res)=>{
     if (req.file && req.file.filename) {
 
         var post = await Post.update({
-            imageUrl : './uploads/' + req.file.filename ,
+            imageUrl : '/uploads/' + req.file.filename ,
             description :req.body.description ,
             userId : req.user.id
         },
