@@ -63,8 +63,13 @@ const findPost = async(req , res)=>{
         include:[
             {
                 model : Comment,
-                as : 'comments'
-                
+                as : 'comments',
+                include : [
+                    {
+                        model : User,
+                        as : 'userC',
+                    }
+                ]
             }
         ]
 

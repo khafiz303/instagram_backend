@@ -38,6 +38,11 @@ const Comment = sequelize.define('Comment', {
 Comment.belongsTo(Post, { foreignKey: 'postId' }); 
 Post.hasMany(Comment, { foreignKey: 'postId', as :'comments' }); 
 
+
+Comment.belongsTo(User, { foreignKey: 'userId', as:'userC'}); 
+User.hasMany(Comment, { foreignKey: 'userId', as : 'userC' }); 
+
+
 module.exports = Comment;
 
 
