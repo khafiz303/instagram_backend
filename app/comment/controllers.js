@@ -28,7 +28,7 @@ const commentDelete = async (req, res) => {
         return res.status(404).send({ message: 'User not found' });
       }
   
-      const comment = await Comment.findByPk(req.body.id);
+      const comment = await Comment.findByPk(req.params.id);
       if (!comment) {
         return res.status(404).send({ message: 'Comment not found' });
       }

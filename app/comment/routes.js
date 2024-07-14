@@ -5,6 +5,6 @@ const passport = require('passport');
 // const {isAuthor} = require('./middlewares')
 
 router.post('/api/add-comment', passport.authenticate('jwt', { session: false }),  commentAdd);
-router.delete('/api/delete-comment', passport.authenticate('jwt', { session: false }), commentDelete )
+router.delete('/api/delete-comment/:id', passport.authenticate('jwt', { session: false }), commentDelete )
 
 module.exports = router;
