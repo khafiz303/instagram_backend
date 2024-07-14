@@ -14,7 +14,7 @@ const commentAdd = async (req, res) => {
             text: req.body.text
         });
 
-        res.status(200).end(comment); 
+        res.status(200).send(comment); 
     } catch (error) {
         console.error('Error adding comment:', error);
         res.status(500).json({ message: 'Failed to add comment', error: error.message });
