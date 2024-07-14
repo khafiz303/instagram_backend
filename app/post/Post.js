@@ -28,11 +28,12 @@ const Post = sequelize.define('Post', {
 
 // Устанавливаем связь между Post и User
 Post.belongsTo(User, {
-    foreignKey: 'userId'
+    foreignKey: 'userId',
+    as: 'user'
 });
 User.hasMany(Post, {
     foreignKey: 'userId',
-    as:'posts'
+    as:'user'
 });
 
 

@@ -40,9 +40,14 @@ const getMyPost =async (req , res)=>{
         },
         include: [
             {
+                model : User,
+                as : 'user'
+            },
+            {
                 model: Comment,
                 as: 'comments'
-            }
+            },
+           
         ]
     });
     
@@ -50,7 +55,19 @@ const getMyPost =async (req , res)=>{
 }
 
 const getAllPosts = async (req , res)=>{
-     const allPost = await Post.findAll()
+     const allPost = await Post.findAll({
+        include:[
+            {
+                model : User,
+                as : 'user'
+             
+            },{
+                model: Comment,
+                as : 'comments'
+            }
+
+        ]
+     })
      res.status(200).send(allPost )
 }
 
@@ -62,6 +79,10 @@ const findPost = async(req , res)=>{
         },
         include:[
             {
+                model: User,
+                as:'user'
+            },
+            {
                 model : Comment,
                 as : 'comments',
                 include : [
@@ -70,7 +91,7 @@ const findPost = async(req , res)=>{
                         as : 'userC',
                     }
                 ]
-            }
+            },
         ]
 
     })
