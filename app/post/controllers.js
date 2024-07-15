@@ -1,6 +1,7 @@
 const Post = require('./Post');
 const Comment = require('./Comment');
 const User = require('../auth/User');
+const Like = require('./Like')
 const { where } = require('sequelize');
 const postCreate = async (req, res) => {
     try {
@@ -47,6 +48,10 @@ const getMyPost =async (req , res)=>{
                 model: Comment,
                 as: 'comments'
             },
+            {
+                model : Like ,
+                as : 'likes'
+            }
            
         ]
     });
@@ -64,6 +69,9 @@ const getAllPosts = async (req , res)=>{
             },{
                 model: Comment,
                 as : 'comments'
+            },{
+                model : Like ,
+                as : 'likes'
             }
 
         ]
@@ -91,6 +99,10 @@ const findPost = async(req , res)=>{
                         as : 'userC',
                     }
                 ]
+            },
+            {
+                model: Comment,
+                as: 'comments'
             },
         ]
 
@@ -164,6 +176,90 @@ const getPost = async(req , res)=>{
     })
     res.status(200).send(post)
 }
+const getLike = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const postId = req.params.id || req.body.id;
+        
+        if (!userId || !postId) {
+            return res.status(400).json({ error: 'User ID and Post ID are required' });
+        }
+
+        const like = await Like.findOne({where:{
+            postId
+        }});
+
+        if (!like) {
+            return res.status(404).json({ error: 'Like not found' });
+        }
+
+        if (like.userId !== req.user.id) {
+            return res.status(403).json({ error: 'Unauthorized: You are not the owner of this like' });
+        }
+
+        return res.status(200).json({ like });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while retrieving the like' });
+    }
+};
+
+
+
+const createLike = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const postId = req.params.id || req.body.id;
+
+        if (!userId || !postId) {
+            return res.status(400).json({ error: 'User ID and Post ID are required' });
+        }
+
+        const findLike = await Like.findOne({
+            where: {
+                postId,
+                userId 
+            }
+        });
+
+        if (findLike) {
+            return res.status(409).json({ error: 'Like already exists' });
+        }
+
+        const like = await Like.create({
+            userId,
+            postId
+        });
+
+        return res.status(201).json({ like });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while creating the like' });
+    }
+};
+
+
+const deleteLike = async (req, res) => {
+    try {
+        const like = await Like.findByPk(req.params.id);
+        if (!like) {
+            return res.status(404).json({ error: 'Like not found' });
+        }
+        
+        if (like.userId !== req.user.id) {
+            return res.status(403).json({ error: 'Unauthorized: You are not the owner of this like' });
+        }
+
+        await like.destroy();
+
+        return res.status(200).json({ message: 'Like deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while deleting the like' });
+    }
+};
+
+
 
 module.exports ={
     postCreate, 
@@ -172,7 +268,10 @@ module.exports ={
     findPost,
     deletePost,
     postEdit,
-    getPost
+    getPost,
+    getLike,
+    createLike,
+    deleteLike
 }
 
 
