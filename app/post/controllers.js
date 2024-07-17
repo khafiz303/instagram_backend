@@ -46,7 +46,13 @@ const getMyPost =async (req , res)=>{
             },
             {
                 model: Comment,
-                as: 'comments'
+                as: 'comments',
+                include :[
+                    {
+                        model : User,
+                        as : 'userC'
+                    }
+                ]
             },
             {
                 model : Like ,
