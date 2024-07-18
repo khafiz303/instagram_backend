@@ -72,7 +72,7 @@ const detail = async (req , res)=>{
         include:[
             {
                 model: Follow,
-                as : 'following',
+                as : 'userFollowing',
                 include : [
                     {
                         model : User , 
@@ -83,7 +83,7 @@ const detail = async (req , res)=>{
             },
             {
                 model : Follow,
-                as : 'follower',
+                as : 'userFollower',
                 include : [
                     {
                         model : User , 
