@@ -75,7 +75,7 @@ const detail = async (req , res)=>{
                 include : [
                     {
                         model : User , 
-                        as : 'userFollowing'
+                        as : 'userFollower'
                     }
                 ]
             
@@ -86,7 +86,7 @@ const detail = async (req , res)=>{
                 include : [
                     {
                         model : User , 
-                         as : 'userFollower'
+                         as : 'userFollowing'
                     }
                 ]
             },
