@@ -23,7 +23,8 @@ const Story = sequelize.define('Story', {
 
 // Устанавливаем связь между Post и User
 Story.belongsTo(User, {
-    foreignKey: 'userId'
+    foreignKey: 'userId',
+    as : 'user'
 });
 User.hasMany(Story, {
     foreignKey: 'userId',

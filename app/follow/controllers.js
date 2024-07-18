@@ -6,7 +6,7 @@ const Comment = require('../post/Comment')
 const follows  = async (req , res)=>{
     if(req.body.id){
         const follow  = await Follow.create({
-            user_id :  11, 
+            user_id :  req.user.id, 
             follower_id : req.body.id
 
     })
@@ -71,11 +71,24 @@ const detail = async (req , res)=>{
         include:[
             {
                 model: Follow,
-                as : 'following'
+                as : 'following',
+                include : [
+                    {
+                        model : User , 
+                        as : 'userFollowing'
+                    }
+                ]
+            
             },
             {
                 model : Follow,
-                as : 'follower'
+                as : 'follower',
+                include : [
+                    {
+                        model : User , 
+                         as : 'userFollower'
+                    }
+                ]
             },
             {
                 model: Post,
@@ -83,13 +96,25 @@ const detail = async (req , res)=>{
                 include: [
                     {
                         model: Comment,
-                        as: 'comments'
+                        as: 'comments',
+                        include :[
+                            {
+                                model : User,
+                                as : 'userC'
+                            }
+                        ]
                     }
                 ]
             },
             {
                 model : Story,
-                as : 'story'
+                as : 'story',
+                include :[
+                    {
+                        model : User,
+                        as : 'user'
+                    }
+                ]
             }
         ]
     })

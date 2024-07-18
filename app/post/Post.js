@@ -33,7 +33,7 @@ Post.belongsTo(User, {
 });
 User.hasMany(Post, {
     foreignKey: 'userId',
-    as:'user'
+    as:'posts'
 });
 
 
