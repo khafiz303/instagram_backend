@@ -6,7 +6,7 @@ const passport = require('passport')
 
 
 router.post('/api/follow',passport.authenticate('jwt', { session: false }),follows);
-router.delete('/api/unsubscribe',passport.authenticate('jwt', { session: false }),unsubscribe);
+router.delete('/api/unsubscribe/:id',passport.authenticate('jwt', { session: false }),unsubscribe);
 router.get('/api/users/:username/following' , getFollowing )
 router.get('/api/users/:username/followers' , getFollowers )
 router.get('/api/user/:username' , detail )

@@ -18,8 +18,8 @@ const follows  = async (req , res)=>{
 const unsubscribe = async (req , res)=>{
     await Follow.destroy({
         where:{
-            user_id : 6,
-            follower_id : req.body.id
+            user_id : req.user.id,
+            follower_id : req.params.id
         }
     })
     res.status(200).end()
