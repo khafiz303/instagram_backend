@@ -36,7 +36,7 @@ const getFollowing = async (req , res)=>{
         },
         include: [{
             model: User,
-            as: 'following',
+            as: 'userFollower',
             attributes: ['id', 'fullName']
         }]
     })
@@ -44,6 +44,7 @@ const getFollowing = async (req , res)=>{
 }
 
 const getFollowers = async (req , res)=>{
+    console.log(req.params.username);
     const user = await User.findOne({
         where:{
             fullName : req.params.username
@@ -55,7 +56,7 @@ const getFollowers = async (req , res)=>{
         },
         include: [{
             model: User,
-            as: 'follower',
+            as: 'userFollowing' ,
             attributes: ['id', 'fullName']
         }]
     })
